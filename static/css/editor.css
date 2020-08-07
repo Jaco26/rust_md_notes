@@ -26,7 +26,6 @@
   height: 100%;
   overflow-y: scroll;
 }
-
 .editor__content-input:focus {
   border: solid #77f 1px;
 }
@@ -43,4 +42,9 @@
   top: 8px;
   right: 12px;
   color: #888;
+}
+
+.editor--preview-only .editor__content-input,
+.editor--preview-only .editor__content-preview-badge {
+  display: none;
 }

@@ -11,3 +11,9 @@ pub struct MdFile {
   pub markdown: String,
   pub html: String,
 }
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct UpdateMdFile {
+  pub name: String,
+  pub markdown: String,
+}

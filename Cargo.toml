@@ -13,5 +13,6 @@ actix-files = "0.2.2"
 rusqlite = "0.23.1"
 
 tera = "1.4.0"
+comrak = "0.8.0"
 
 serde = { version = "1.0.114", features = ["derive"] }
