@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="/css/editor.css">
+{% endblock stylesheets %}
+
+
+{% block content %}
+
+  <div class="editor" data-filename="{{file.name}}">
+    <div class="editor__control-bar">
+      <h3>{{file.name}}.md</h3>
+    </div>
+    <div class="editor__content">
+      <textarea class="editor__content-input"></textarea>
+      <div class="editor__content-preview">
+        <span class="editor__content-preview-badge">Preview</span>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+  <script src="/js/editor.js"></script>
+{% endblock scripts %}

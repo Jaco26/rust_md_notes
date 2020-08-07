@@ -1,0 +1,61 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+a,
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+a {
+  color: rgb(58, 128, 131);
+}
+a:visited {
+  color: blueviolet
+}
+
+#app {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.header {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  height: 64px;
+}
+.page {
+  display: flex;
+  height: calc(100% - 64px);
+}
+.page__side-nav {
+  padding: 0 8px;
+  width: 128px;
+  border-right: 1px solid #ccc;
+}
+.page__side-nav ul {
+  list-style: none;
+  padding: 0;
+}
+.page__main-content {
+  width: 100%;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MdNotes</title>
+  <link rel="stylesheet" href="/css/main.css">
+  {% block stylesheets %}{% endblock stylesheets %}
+</head>
+<body>
+  
+  <div id="app">
+    <header class="header">
+      <h1>
+        <a href="/">Home</a>
+      </h1>
+    </header>
+    <main class="page">
+      <section class="page__side-nav">
+        <ul>
+          {% for filename in filenames %}
+            <li>
+              <a href="/page/{{filename}}">{{filename}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+      <section class="page__main-content">
+        {% block content %}{% endblock content %}
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/main.js"></script>
+  {% block scripts %}{% endblock scripts %}
+
+</body>
+</html>
