@@ -23,12 +23,12 @@ impl Db {
       CREATE TABLE IF NOT EXISTS dir_child_directory (
         id TEXT PRIMARY KEY,
         parent_dir_id TEXT,
-        FOREIGN KEY (parent_dir_id) REFERENCES dir (id)
+        FOREIGN KEY (parent_dir_id) REFERENCES dir (id) ON DELETE CASCADE
       );
       CREATE TABLE IF NOT EXISTS dir_file (
         id TEXT PRIMARY KEY,
         parent_dir_id TEXT,
-        FOREIGN KEY (parent_dir_id) REFERENCES dir (id)
+        FOREIGN KEY (parent_dir_id) REFERENCES dir (id) ON DELETE CASCADE
       );
       CREATE TABLE IF NOT EXISTS file (
         id TEXT PRIMARY KEY,
@@ -36,7 +36,7 @@ impl Db {
         name TEXT NOT NULL,
         markdown TEXT NOT NULL,
         html TEXT NOT NULL,
-        FOREIGN KEY (item_id) REFERENCES dir_file (id)
+        FOREIGN KEY (item_id) REFERENCES dir_file (id) ON DELETE CASCADE
       );  
     ";
 
@@ -58,6 +58,29 @@ impl Db {
   }
   fn exists(&self, conn: &rusqlite::Connection, sql: &str, params: &[&dyn rusqlite::ToSql]) -> Result<bool, Error> {
     conn.prepare(sql)?.exists(params)
+  }
+  fn is_root(&self, conn: &rusqlite::Connection, dir_id: &str) -> Result<bool, Error> {
+    let mut stmt_is_root = conn.prepare("SELECT name FROM dir WHERE id = ?1")?;
+    let dir_name: String = stmt_is_root.query_row(&[dir_id], |row| Ok(row.get(0).unwrap()))?;
+    Ok(&dir_name == "root")
+  }
+  pub fn delete_dir(&self, dir_id: &str) -> Result<(), Error> {
+    let conn = self.connect()?;
+    if !self.is_root(&conn, dir_id)? {
+      let sql = "DELETE FROM dir WHERE id = ?1";
+      let params = &[dir_id];
+      conn.execute(sql, params)?;
+    }
+    Ok(())
+  }
+  pub fn update_dir_name(&self, dir_id: &str, name: &str) -> Result<(), Error> {
+    let conn = self.connect()?;
+    if !self.is_root(&conn, dir_id)? {
+      let sql = "UPDATE dir SET name = ?1 WHERE id = ?2";
+      let params = &[name, dir_id];
+      conn.execute(sql, params)?;
+    }
+    Ok(())
   }
   pub fn create_file(&self, name: &str, parent_dir_id: &str) -> Result<(), Error> {
     let sql_dir_file = "INSERT INTO dir_file (id, parent_dir_id) VALUES (?1, ?2);";

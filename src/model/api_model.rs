@@ -12,6 +12,11 @@ pub mod receive {
   pub struct GetDirParams {
     pub id: String,
   }
+
+  #[derive(Deserialize)]
+  pub struct UpdateDirNameJson {
+    pub name: String,
+  }
 }
 
 

@@ -4,8 +4,36 @@ use actix_web::web::{Path, Json, Data};
 use crate::db::Db;
 use crate::model::api_model::receive::{
   CreateDirItemParams,
-  GetDirParams
+  GetDirParams,
+  UpdateDirNameJson
 };
+
+pub async fn delete_dir(db: Data<Db>, params: Path<(String,)>) -> HttpResponse {
+  let (dir_id,) = params.into_inner();
+  match db.delete_dir(&dir_id) {
+    Ok(_) => HttpResponse::Ok().finish(),
+    Err(error) => {
+      eprintln!("{}", error);
+      HttpResponse::InternalServerError().finish()
+    }
+  }
+}
+
+pub async fn update_dir_name(
+  db: Data<Db>,
+  params: Path<(String,)>,
+  body: Json<UpdateDirNameJson>
+) -> HttpResponse {
+  let (dir_id,) = params.into_inner();
+  let UpdateDirNameJson { name } = &body.0;
+  match db.update_dir_name(&dir_id, &name) {
+    Ok(_) => HttpResponse::Ok().finish(),
+    Err(error) => {
+      eprintln!("{}", error);
+      HttpResponse::InternalServerError().finish()
+    }
+  }
+}
 
 
 pub async fn create_dir(db: Data<Db>, item: Json<CreateDirItemParams>) -> HttpResponse {
