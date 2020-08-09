@@ -9,12 +9,12 @@ use crate::model::api_model::send::{
 
 
 #[derive(Clone)]
-pub struct DbV2 {
+pub struct Db {
   location: String,
 }
 
-impl DbV2 {
-  pub fn new(location: &str) -> Result<DbV2, Error> {
+impl Db {
+  pub fn new(location: &str) -> Result<Db, Error> {
     let sql_create_tables = "
       CREATE TABLE IF NOT EXISTS dir (
         id TEXT PRIMARY KEY,
@@ -42,7 +42,7 @@ impl DbV2 {
 
     let sql_seed = "INSERT INTO dir (id, name) VALUES (?1, 'root');";
   
-    let db = DbV2 { location: location.to_string() };
+    let db = Db { location: location.to_string() };
     let conn = db.open_conn()?;
     conn.execute_batch(sql_create_tables)?;
     if !db.exists(&conn, "SELECT * FROM dir WHERE name = 'root'", NO_PARAMS)? {
@@ -122,15 +122,16 @@ impl DbV2 {
 
     Ok(dir)
   }
-  pub fn get_dirnames(&self) -> Result<Vec<DirectoryItem>, Error> {
+  pub fn list_dirs(&self) -> Result<Vec<DirectoryItem>, Error> {
     let conn = self.connect()?;
-    let mut stmt = conn.prepare("SELECT * FROM dir;")?;
+    let mut stmt = conn.prepare("SELECT * FROM dir")?;
     let rows: Vec<DirectoryItem> = stmt.query_map(NO_PARAMS, |row| {
       Ok(DirectoryItem {
         id: row.get(0)?,
         name: row.get(1)?,
       })
     })?.map(|x| x.unwrap()).collect();
+    println!("{:#?} b;;lkjlkj", rows);
     Ok(rows)
   }
 }

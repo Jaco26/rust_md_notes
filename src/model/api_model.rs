@@ -19,7 +19,7 @@ pub mod receive {
 pub mod send {
   use serde::Serialize;
 
-  #[derive(Serialize)]
+  #[derive(Debug, Serialize)]
   pub struct DirectoryItem {
     pub id: String,
     pub name: String,
