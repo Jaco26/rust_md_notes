@@ -1,0 +1,38 @@
+.md h1,
+.md h2,
+.md h3,
+.md h4,
+.md h5,
+.md h6,
+.md p {
+  margin: 12px 0;
+}
+.md p img {
+  width: 100%;
+}
+.md h1 {
+  font-size: 28px;
+}
+.md h2 {
+  font-size: 24px;
+}
+.md h3 {
+  font-size: 20px;
+}
+.md h4{
+  font-size: 16px;
+}
+.md hr {
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+.md a {
+  text-decoration: none;
+}
+.md blockquote {
+  color: #555;
+  margin: 16px 4px;
+  padding: 0 16px;
+  /* border-left: 4px solid #ccc;
+  border-radius: 2px; */
+}

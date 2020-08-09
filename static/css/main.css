@@ -28,9 +28,8 @@ a {
   color: rgb(58, 128, 131);
 }
 a:visited {
-  color: blueviolet
+  color:rgb(58, 128, 131);
 }
-
 #app {
   position: absolute;
   top: 0;

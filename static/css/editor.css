@@ -23,8 +23,7 @@
   border: solid transparent 1px;
   border-radius: 4px;
   box-shadow: 1px 1px 4px #ccc;
-  height: 100%;
-  overflow-y: scroll;
+  min-height: 100%;
 }
 .editor__content-input:focus {
   border: solid #77f 1px;
@@ -36,6 +35,7 @@
   margin-left: 4px;
   border-radius: 4px;
   box-shadow: 1px 1px 4px #ccc;
+  min-height: 100%;
 }
 .editor__content-preview-badge {
   position: absolute;
