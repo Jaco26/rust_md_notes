@@ -21,10 +21,11 @@ pub async fn create_dir(db: Data<Db>, item: Json<CreateDirItemParams>) -> HttpRe
 
 /// Return a flat list of all directory names and ids
 pub async fn list_dirs(db: Data<Db>) -> HttpResponse {
+  println!("Hello from list_dirs!");
   match db.list_dirs() {
     Ok(dirnames) => HttpResponse::Ok().json(dirnames),
     Err(error) => {
-      eprintln!("BLAGGGG {:?}", error);
+      eprintln!("{:?}", error);
       HttpResponse::InternalServerError().finish()
     }
   }

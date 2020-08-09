@@ -131,7 +131,6 @@ impl Db {
         name: row.get(1)?,
       })
     })?.map(|x| x.unwrap()).collect();
-    println!("{:#?} b;;lkjlkj", rows);
     Ok(rows)
   }
 }
