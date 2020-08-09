@@ -7,6 +7,8 @@ use crate::model::api_model::send::{
 };
 
 
+pub mod actions;
+
 
 #[derive(Clone)]
 pub struct Db {
@@ -63,6 +65,9 @@ impl Db {
     let mut stmt_is_root = conn.prepare("SELECT name FROM dir WHERE id = ?1")?;
     let dir_name: String = stmt_is_root.query_row(&[dir_id], |row| Ok(row.get(0).unwrap()))?;
     Ok(&dir_name == "root")
+  }
+  pub fn conn(&self) -> Result<Connection, Error> {
+    self.connect()
   }
   pub fn delete_dir(&self, dir_id: &str) -> Result<(), Error> {
     let conn = self.connect()?;

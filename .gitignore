@@ -1,4 +1,3 @@
 /target
 
-db.sql
-data.sqlite
+*.sqlite

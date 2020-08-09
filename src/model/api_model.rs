@@ -17,6 +17,11 @@ pub mod receive {
   pub struct UpdateDirNameJson {
     pub name: String,
   }
+
+  #[derive(Deserialize)]
+  pub struct UpdateFileContentJson {
+    pub markdown: String,
+  }
 }
 
 
@@ -38,32 +43,18 @@ pub mod send {
     pub child_dirs: Vec<DirectoryItem>
   }
 
+  #[derive(Serialize)]
+  pub struct MdFile {
+    pub id: String,
+    pub item_id: String,
+    pub name: String,
+    pub markdown: String,
+    pub html: String,
+  }
+
+  #[derive(Serialize)]
+  pub struct MdFileHtml {
+    pub html: String,
+  }
+
 }
-
-
-
-
-/*
-
-{
-  "root": ["dir_item_id", "dir_item_id"]
-  ""
-}
-
-enum DirItemKind {
-  Dir,
-  File,
-}
-
-struct DirectoryItem {
-  id: String,
-  name: String,
-  kind: DirItemKind,
-}
-
-struct Directory {
-  id: String,
-  items: Vec<DirectoryItem>
-}
-
-*/

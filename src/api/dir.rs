@@ -1,7 +1,7 @@
 use actix_web::HttpResponse;
 use actix_web::web::{Path, Json, Data};
 
-use crate::db::Db;
+use crate::db::{self, Db};
 use crate::model::api_model::receive::{
   CreateDirItemParams,
   GetDirParams,

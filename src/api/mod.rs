@@ -19,5 +19,13 @@ pub fn register_routes(cfg: &mut web::ServiceConfig) {
     )
     .service(web::scope("/file")
       .route("/", web::post().to(file::create_file))
+      .service(web::resource("/{id}")
+        .route(web::get().to(file::get_file))
+        .route(web::put().to(file::update_file_content))
+        .route(web::delete().to(file::delete_file))
+      )
+      .service(web::resource("/{id}/html")
+        .route(web::get().to(file::get_file_html))
+      )
     );
 }
