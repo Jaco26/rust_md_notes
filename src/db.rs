@@ -108,8 +108,7 @@ impl DbV2 {
 
     let mut stmt_dir_child_dirs = conn.prepare("
       SELECT dcd.id, (SELECT name FROM dir WHERE id = dcd.id)
-      FROM dir_child_directory dcd JOIN dir
-        ON dcd.parent_dir_id = dir.id
+      FROM dir_child_directory dcd
       WHERE dcd.parent_dir_id = :id
     ")?;
     let dir_child_dirs: Vec<DirectoryItem> = stmt_dir_child_dirs.query_map_named(&[(":id", &dir_id)], |row| {
