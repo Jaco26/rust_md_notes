@@ -15,6 +15,10 @@ mod api;
 
 use db::Db;
 
+async fn index() -> actix_web::Result<fs::NamedFile> {
+    Ok(fs::NamedFile::open("./static/index.html")?)
+}
+
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -35,6 +39,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::scope("/api").configure(api::register_routes))
             .service(fs::Files::new("/js", "./static/js/"))
             .service(fs::Files::new("/css", "./static/css/"))
+            .service(web::resource("/*").route(web::get().to(index)))
     })
     .bind("0.0.0.0:3001")?
     .run()

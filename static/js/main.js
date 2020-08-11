@@ -1,28 +1,42 @@
-const api = (function () {
-  const doFetch = (url, { method, body = {}, headers = {} } = {}) => {
-    const options = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers
-      }
-    }
-  
-    if (method === 'post' || method === 'put' && body) {
-      options.body = JSON.stringify(body)
-    }
-  
-    return fetch(encodeURI(url), options)
-  }
-  
-  return {
-    doGet: (url, headers) => doFetch(url, { method: 'get', headers }),
-    doDelete: (url, headers) => doFetch(url, { method: 'delete', headers }),
-    doPost: (url, body, headers) => doFetch(url, { method: 'post', body, headers }),
-    doPut: (url, body, headers) => doFetch(url, { method: 'put', body, headers }),
-  }
-  
-})()
+import './vendor/vue.js'
+import { api } from './util.js'
 
+
+const app = new Vue({
+  computed: {
+    rootDir() {
+      return this.directories.find(d => d.name === 'root')
+    }
+  },
+  data() {
+    return {
+      counter: 1,
+      dirList: [],
+      dirContentList: [],
+      errors: []
+    }
+  },
+  methods: {
+
+  },
+  async mounted() {
+    try {
+      this.dirList = await api.doGet('/api/dir/list')
+      this.dirContentList = await Promise.all(
+        this.dirList.map(dir => api.doGet(`/api/dir/${dir.id}`))
+      )
+    } catch (error) {
+      this.errors.push(error.message)
+    }
+  },
+  template: `
+    <div>
+      Hello from the app {{counter}} {{counter < 2 ? 'time' : 'times'}}
+      <button @click="counter += 1">click me</button>
+    </div>
+  `,
+})
+
+app.$mount('#app')
 
 
