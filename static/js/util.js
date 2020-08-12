@@ -1,6 +1,6 @@
 
 
-const doFetch = async (url, { method, body = {}, headers = {} } = {}) => {
+const doFetch = async (uri, { method, body = {}, headers = {} } = {}) => {
   const options = {
     method,
     headers: {
@@ -13,14 +13,23 @@ const doFetch = async (url, { method, body = {}, headers = {} } = {}) => {
     options.body = JSON.stringify(body)
   }
 
-  const response = await fetch(encodeURI(url), options)
 
-  return await response.json()
+  const response = await fetch(encodeURI(`/api${uri}`), options)
+
+  const rv = { data: null, status: response.status, statusText: response.statusText }
+
+  try {
+    rv.data = await response.json()
+  } catch (error) { }
+
+  return rv
 }
 
+
+
 export const api = {
-  doGet: (url, headers) => doFetch(url, { method: 'get', headers }),
-  doDelete: (url, headers) => doFetch(url, { method: 'delete', headers }),
-  doPost: (url, body, headers) => doFetch(url, { method: 'post', body, headers }),
-  doPut: (url, body, headers) => doFetch(url, { method: 'put', body, headers }),
+  doGet: (uri, headers) => doFetch(uri, { method: 'get', headers }),
+  doDelete: (uri, headers) => doFetch(uri, { method: 'delete', headers }),
+  doPost: (uri, body, headers) => doFetch(uri, { method: 'post', body, headers }),
+  doPut: (uri, body, headers) => doFetch(uri, { method: 'put', body, headers }),
 }

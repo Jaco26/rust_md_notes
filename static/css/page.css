@@ -1,0 +1,15 @@
+.page {
+  display: flex;
+  height: 100%;
+}
+.page__file-tree {
+  background-color: cadetblue;
+  flex-basis: 250px;
+}
+.page__file-tree {
+  
+}
+.page__main-content {
+  background-color: aquamarine;
+  flex: 3;
+}
