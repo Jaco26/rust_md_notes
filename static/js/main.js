@@ -1,38 +1,18 @@
 import './vendor/vue.js'
-import { api } from './util.js'
+import { api, buildFileTreeRecursively } from './util.js'
+
 
 
 const app = new Vue({
   computed: {
-    rootDir() {
-      return this.dirList.find(dir => dir.name === 'root') || {}
-    },
-    dirIds() {
-      return Object.keys(this.dirs)
-    },
-    dirList() {
+    _dirList() {
       return Object.values(this.dirs)
     },
+    rootDir() {
+      return this._dirList.find(dir => dir.name === 'root') || {}
+    },
     dirTree() {
-
-      const visitedDirs = {}
-      
-      const buildTreeRecursive = (accum, dir) => {
-        accum[dir.id] = dir
-
-        dir.child_dirs.forEach(childDir => {
-
-          accum[dir.id].child_dirs = buildTreeRecursive(accum, this.dirs[childDir.id])
-
-        })
-      
-        return accum
-      }
-
-      if (this.rootDir) {
-        return buildTreeRecursive({}, this.rootDir)
-      }
-      return {}
+      return buildFileTreeRecursively({}, this.dirs, this.rootDir)
     }
   },
   data() {
@@ -100,7 +80,7 @@ const app = new Vue({
         <div class="page__main-content">
           main content
           <pre>
-            {{rootDir}}
+            {{dirTree}}
           </pre>
         </div>
       </div>
