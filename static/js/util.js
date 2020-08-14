@@ -36,15 +36,27 @@ export const api = {
 export const buildFileTreeRecursively = (
   accum,
   directoryDictionary,
-  currNode
+  currDir
 ) => {
-  accum[currNode.id] = currNode
-  accum[currNode.id].child_dirs = (currNode.child_dirs || []).map(child => (
-    buildFileTreeRecursively(
-      {},
-      directoryDictionary,
-      directoryDictionary[child.id]
-    )
-  ))
+
+  accum[currDir.id] = {
+    ...currDir,
+    child_dirs: (currDir.child_dirs || []).map(child => (
+      buildFileTreeRecursively(
+        {},
+        directoryDictionary,
+        directoryDictionary[child.id]
+      )
+    ))
+  }
   return accum
+  // accum[currDir.id] = currDir
+  // accum[currDir.id].child_dirs = (currDir.child_dirs || []).map(child => (
+  //   buildFileTreeRecursively(
+  //     {},
+  //     directoryDictionary,
+  //     directoryDictionary[child.id]
+  //   )
+  // ))
+  // return accum
 }

@@ -1,9 +1,14 @@
 import './vendor/vue.js'
 import { api, buildFileTreeRecursively } from './util.js'
 
+import Directory from './components/directory.js'
+
 
 
 const app = new Vue({
+  components: {
+    Directory
+  },
   computed: {
     _dirList() {
       return Object.values(this.dirs)
@@ -70,11 +75,14 @@ const app = new Vue({
             </form>
           </div>
           <div>
-            <ul>
-              <li v-for="(file, i) in rootDir.files">
-                {{file.name}}
-              </li>
-            </ul>
+            <div class="dir-tree" v-if="rootDir.id">
+              <Directory v-bind="dirTree[rootDir.id]" />
+              <!-- <Directory
+                v-if="rootDir.id"
+                :child_dirs="dirTree[rootDir.id].child_dirs"
+                :files="dirTree[rootDir.id].files"
+              /> -->
+            </div>
           </div>
         </div>
         <div class="page__main-content">
