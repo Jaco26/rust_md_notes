@@ -33,30 +33,12 @@ export const api = {
   doPut: (uri, body, headers) => doFetch(uri, { method: 'put', body, headers }),
 }
 
-export const buildFileTreeRecursively = (
-  accum,
-  directoryDictionary,
-  currDir
-) => {
-
-  accum[currDir.id] = {
-    ...currDir,
-    child_dirs: (currDir.child_dirs || []).map(child => (
-      buildFileTreeRecursively(
-        {},
-        directoryDictionary,
-        directoryDictionary[child.id]
-      )
+export const buildFileTreeRecursively = (directoryDictionary, currDir) => ({
+  ...currDir,
+  child_dirs: (currDir.child_dirs || []).map(child => (
+    buildFileTreeRecursively(
+      directoryDictionary,
+      directoryDictionary[child.id]
     ))
-  }
-  return accum
-  // accum[currDir.id] = currDir
-  // accum[currDir.id].child_dirs = (currDir.child_dirs || []).map(child => (
-  //   buildFileTreeRecursively(
-  //     {},
-  //     directoryDictionary,
-  //     directoryDictionary[child.id]
-  //   )
-  // ))
-  // return accum
-}
+  )
+})

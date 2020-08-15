@@ -14,11 +14,11 @@ const app = new Vue({
       return Object.values(this.dirs)
     },
     rootDir() {
-      return this._dirList.find(dir => dir.name === 'root') || {}
+      return buildFileTreeRecursively(
+        this.dirs,
+        this._dirList.find(dir => dir.name === 'root') || {}
+      )
     },
-    dirTree() {
-      return buildFileTreeRecursively({}, this.dirs, this.rootDir)
-    }
   },
   data() {
     return {
@@ -76,20 +76,12 @@ const app = new Vue({
           </div>
           <div>
             <div class="dir-tree" v-if="rootDir.id">
-              <Directory v-bind="dirTree[rootDir.id]" />
-              <!-- <Directory
-                v-if="rootDir.id"
-                :child_dirs="dirTree[rootDir.id].child_dirs"
-                :files="dirTree[rootDir.id].files"
-              /> -->
+              <Directory v-bind="rootDir" />
             </div>
           </div>
         </div>
         <div class="page__main-content">
           main content
-          <pre>
-            {{dirTree}}
-          </pre>
         </div>
       </div>
     </div>
