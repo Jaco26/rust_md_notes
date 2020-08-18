@@ -1,10 +1,12 @@
 import Directory from './directory.js'
 
+
 export default {
   functional: true,
   name: 'DirectoryItems',
   props: {
     child_dirs: Array,
+    dirsOpenState: Object,
     files: Array,
   },
   render(h, ctx) {
@@ -32,7 +34,16 @@ export default {
             h(
               Directory,
               {
-                props: { name: childDir.name, files: childDir.files, child_dirs: childDir.child_dirs },
+                on: {
+                  toggleOpenState: ctx.listeners.toggleOpenState
+                },
+                props: {
+                  dirsOpenState: ctx.props.dirsOpenState,
+                  id: childDir.id,
+                  name: childDir.name,
+                  files: childDir.files,
+                  child_dirs: childDir.child_dirs
+                },
               }
             )
           ))

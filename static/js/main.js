@@ -7,7 +7,7 @@ import Directory from './components/directory.js'
 
 const app = new Vue({
   components: {
-    Directory
+    Directory,
   },
   computed: {
     _dirList() {
@@ -24,6 +24,7 @@ const app = new Vue({
     return {
       newFileName: '',
       dirs: {},
+      dirsOpenState: {},
       errors: []
     }
   },
@@ -31,6 +32,7 @@ const app = new Vue({
     async init() {
       try {
         this.dirs = {}
+        this.dirsOpenState = {}
         const { data } = await api.doGet('/dir/list')
         data.forEach(dir => this.fetchDir(dir.id))
       } catch (error) {
@@ -41,6 +43,7 @@ const app = new Vue({
       try {
         const { data } = await api.doGet(`/dir/${dirId}`)
         this.$set(this.dirs, dirId, data)
+        this.$set(this.dirsOpenState, dirId, data.name === 'root' || !!this.dirsOpenState[dirId])
       } catch (error) {
         this.errors.push(error)
       }
@@ -56,6 +59,9 @@ const app = new Vue({
         console.error(error)
         this.errors.push(error)
       }
+    },
+    onToggleOpenState({ id, isOpen }) {
+      this.dirsOpenState[id] = isOpen
     }
   },
   mounted() {
@@ -76,7 +82,11 @@ const app = new Vue({
           </div>
           <div>
             <div class="dir-tree" v-if="rootDir.id">
-              <Directory v-bind="rootDir" />
+              <Directory
+                :dirsOpenState="dirsOpenState"
+                @toggleOpenState="onToggleOpenState"
+                v-bind="rootDir"
+              />
             </div>
           </div>
         </div>
